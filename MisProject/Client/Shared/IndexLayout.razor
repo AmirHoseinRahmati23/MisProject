@@ -4,9 +4,11 @@
     <MudThemeProvider Theme="_themeChangerButton.CurrentTheme" />
 
     <MudLayout>
-        <MudAppBar Elevation="1" Fixed="true" Dense="true">
-            <MudSpacer/>
-            <ThemeChangerButton RefreshAction="() => StateHasChanged()" Edge="Edge.End" @ref="_themeChangerButton"/>
+        <MudAppBar Elevation="1" Fixed="true">
+            <RightAppBarButtons />
+            <MudSpacer />
+            <LeftAppBarButtons/>
+            <ThemeChangerButton RefreshAction="() => StateHasChanged()" Edge="Edge.End" @ref="_themeChangerButton" />
         </MudAppBar>
         <MudMainContent>
             <MudContainer MaxWidth="MaxWidth.Large" Class="mt-3">

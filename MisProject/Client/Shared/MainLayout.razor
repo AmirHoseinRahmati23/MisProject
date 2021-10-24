@@ -4,10 +4,12 @@
     <MudThemeProvider Theme="_themeChangerButton.CurrentTheme" />
 
     <MudLayout>
-        <MudAppBar Elevation="1" Fixed="true" Dense="true">
+        <MudAppBar Elevation="1" Fixed="true">
             <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+            <RightAppBarButtons />
             <MudSpacer />
-            <ThemeChangerButton @ref="_themeChangerButton" RefreshAction="() => StateHasChanged()"/>
+            <LeftAppBarButtons />
+            <ThemeChangerButton @ref="_themeChangerButton" RefreshAction="() => StateHasChanged()" />
         </MudAppBar>
         <MudDrawer @bind-Open="_drawerOpen" Elevation="2" Anchor="Anchor.Start">
             <MudDrawerHeader>
