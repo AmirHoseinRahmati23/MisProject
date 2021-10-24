@@ -2,13 +2,23 @@
 
 <MudRTLProvider RightToLeft="true">
     <MudThemeProvider Theme="_themeChangerButton.CurrentTheme" />
+    <MudDialogProvider/>
+    <MudSnackbarProvider/>
 
     <MudLayout>
         <MudAppBar Elevation="1" Fixed="true">
-            <RightAppBarButtons />
-            <MudSpacer />
+          
+            <RightAppBarButtons/>
+            <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
+                <MudMenu Icon="@Icons.Filled.Menu" Color="Color.Inherit">
+                    <MudMenuItem><RightAppBarButtons AsMenuItem="true"/></MudMenuItem>
+                </MudMenu>
+            </MudHidden>
+
+            <MudSpacer/>
             <LeftAppBarButtons/>
-            <ThemeChangerButton RefreshAction="() => StateHasChanged()" Edge="Edge.End" @ref="_themeChangerButton" />
+            <ThemeChangerButton RefreshAction="() => StateHasChanged()" Edge="Edge.End" @ref="_themeChangerButton"/>
+
         </MudAppBar>
         <MudMainContent>
             <MudContainer MaxWidth="MaxWidth.Large" Class="mt-3">

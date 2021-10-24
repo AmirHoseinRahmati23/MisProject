@@ -4,12 +4,25 @@ namespace ThemeStatics;
 
 public static class Themes
 {
+    public static readonly Typography Typography = new()
+    {
+        Body1 =
+        {
+            FontSize = "1.3rem",
+            FontFamily = new []{"Roboto", "Helvetica", "Arial", "sans-serif"},
+            FontWeight = 400,
+            LetterSpacing = ".00938em",
+            LineHeight = 1.5
+        },
+    };
+
     public static readonly MudTheme DefaultTheme = new()
     {
         Palette = new Palette()
         {
             Black = "#272c34"
-        }
+        },
+        Typography = Typography
     };
 
     public static readonly MudTheme DarkTheme = new()
@@ -36,6 +49,7 @@ public static class Themes
             LinesDefault = "rgba(255,255,255, 0.12)",
             LinesInputs = "rgba(255,255,255, 0.3)",
             TextDisabled = "rgba(255,255,255, 0.2)"
-        }
+        },
+        Typography = Typography
     };
 }

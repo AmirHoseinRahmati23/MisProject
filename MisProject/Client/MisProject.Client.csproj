@@ -29,4 +29,8 @@
     <_ContentIncludedByDefault Remove="Components\LeftAppBarButtons.razor" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\" />
+  </ItemGroup>
+
 </Project>
