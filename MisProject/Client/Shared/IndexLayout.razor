@@ -1,16 +1,12 @@
 ﻿@inherits LayoutComponentBase
-@using static ThemeStatics.Themes
 
 <MudRTLProvider RightToLeft="true">
-    <MudThemeProvider Theme="_currentTheme" />
+    <MudThemeProvider Theme="_themeChangerButton.CurrentTheme" />
 
     <MudLayout>
         <MudAppBar Elevation="1" Fixed="true" Dense="true">
             <MudSpacer/>
-            <MudToggleIconButton Toggled="_isDarkTheme" ToggledChanged="ChangeTheme"
-                                 Icon="@Icons.Filled.Nightlight" ToggledIcon="@Icons.Filled.WbSunny"
-                                 Title="Night Mode" ToggledTitle="Light Mode"
-                                 Color="Color.Inherit" Edge="Edge.End"/>
+            <ThemeChangerButton RefreshAction="() => StateHasChanged()" Edge="Edge.End" @ref="_themeChangerButton"/>
         </MudAppBar>
         <MudMainContent>
             <MudContainer MaxWidth="MaxWidth.Large" Class="mt-3">
@@ -21,18 +17,5 @@
 </MudRTLProvider>
 
 @code {
-    bool _isDarkTheme = false;
-
-    protected override void OnInitialized()
-    {
-        _currentTheme = DefaultTheme;
-    }
-    
-    MudTheme _currentTheme = new();
-
-    private void ChangeTheme()
-    {
-        _currentTheme = _isDarkTheme ? DefaultTheme : DarkTheme;
-        _isDarkTheme = !_isDarkTheme;
-    }
+    private ThemeChangerButton _themeChangerButton = new();
 }
