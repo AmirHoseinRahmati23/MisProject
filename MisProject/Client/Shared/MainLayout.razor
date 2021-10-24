@@ -1,31 +1,51 @@
 ﻿@inherits LayoutComponentBase
+@using static ThemeStatics.Themes
 
-<MudThemeProvider />
+<MudRTLProvider RightToLeft="true">
+    <MudThemeProvider Theme="_currentTheme" />
 
-<MudLayout>
-    <MudAppBar Elevation="1" Fixed="true" Dense="true">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        <MudSpacer />
-        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
-    </MudAppBar>
-    <MudDrawer @bind-Open="_drawerOpen" Elevation="2" Color="Color.Primary">
-        <MudDrawerHeader>
-            <MudText Typo="Typo.h5" Class="mt-1"></MudText>
-        </MudDrawerHeader>
-        <NavMenu />
-    </MudDrawer>
-    <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.Large">
-            @Body
-        </MudContainer>
-    </MudMainContent>
-</MudLayout>
+    <MudLayout>
+        <MudAppBar Elevation="1" Fixed="true" Dense="true">
+            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+            <MudSpacer/>
+            <MudToggleIconButton Toggled="_isDarkTheme" ToggledChanged="ChangeTheme"
+                                 Icon="@Icons.Filled.Nightlight" ToggledIcon="@Icons.Filled.WbSunny"
+                                 Title="Night Mode" ToggledTitle="Light Mode"
+                                 Color="Color.Inherit"/>
+        </MudAppBar>
+        <MudDrawer @bind-Open="_drawerOpen" Elevation="2" Anchor="Anchor.Start">
+            <MudDrawerHeader>
+                <MudText Typo="Typo.h5" Class="mt-1">Application</MudText>
+            </MudDrawerHeader>
+            <NavMenu />
+        </MudDrawer>
+        <MudMainContent>
+            <MudContainer MaxWidth="MaxWidth.Large">
+                @Body
+            </MudContainer>
+        </MudMainContent>
+    </MudLayout>
+</MudRTLProvider>
 
 @code {
     bool _drawerOpen = true;
+    bool _isDarkTheme = false;
+
+    protected override void OnInitialized()
+    {
+        _currentTheme = DefaultTheme;
+    }
 
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
+    }
+
+    MudTheme _currentTheme = new();
+
+    private void ChangeTheme()
+    {
+        _currentTheme = _isDarkTheme ? DefaultTheme : DarkTheme;
+        _isDarkTheme = !_isDarkTheme;
     }
 }
