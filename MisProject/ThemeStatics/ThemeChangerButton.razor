@@ -1,0 +1,28 @@
+﻿@using MudBlazor
+@using static ThemeStatics.Themes
+
+<MudTooltip Placement="Placement.Bottom" Text="@(_isDarkTheme ? "حالت روشن" : "حالت شب")">
+    <MudToggleIconButton Toggled="_isDarkTheme" ToggledChanged="ChangeTheme"
+                         Icon="@Icons.Filled.Nightlight" ToggledIcon="@Icons.Filled.WbSunny"
+                         Title="Night Mode" ToggledTitle="Light Mode"
+                         Color="Color.Inherit" Edge="Edge" />
+</MudTooltip>
+
+@code {
+    bool _isDarkTheme = false;
+
+    [Parameter]
+    public Edge Edge { get; set; } = Edge.End;
+
+    [Parameter, EditorRequired]
+    public Action? RefreshAction { get; set; }
+
+    public MudTheme CurrentTheme { get; set; } = DefaultTheme;
+
+    private void ChangeTheme()
+    {
+        CurrentTheme = _isDarkTheme ? DefaultTheme : DarkTheme;
+        _isDarkTheme = !_isDarkTheme;
+        RefreshAction?.Invoke();
+    }
+}
