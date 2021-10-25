@@ -1,9 +1,18 @@
+global using DbLayer;
+global using DbLayer.Contexts;
+global using DbLayer.Entities;
+global using DbLayer.Entities.Users;
+global using DbLayer.Entities.Permissions;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddDbContext<MisDbContext>(p =>
+    p.UseSqlServer(builder.Configuration.GetConnectionString("MisDbContext")));
 
 var app = builder.Build();
 
