@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using FluentValidation;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace ClientLibraries.DTOs;
@@ -48,6 +49,15 @@ public class RegisterDTO
     [Compare(nameof(Password), ErrorMessage = "رمز عبور مطابقت ندارد")]
     [PasswordPropertyText]
     public string RepeatPassword { get; set; }
+}
+
+public class RegisterDTOFluentValidator : AbstractValidator<RegisterDTO>
+{
+    public RegisterDTOFluentValidator()
+    {
+        RuleFor(p => p.UserName)
+            .
+    }
 }
 
 public class LoginDTO

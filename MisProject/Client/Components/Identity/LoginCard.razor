@@ -12,31 +12,66 @@
     </MudCardHeader>
     <MudDivider DividerType="DividerType.Middle" />
 
-    <MudCardContent>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-    </MudCardContent>
-    <MudDivider DividerType="DividerType.Middle" />
+    <MudForm @ref="_form" @bind-IsValid="_isSuccess" @bind-Errors="_errors">
+        <MudCardContent>
+            <MudRTLProvider RightToLeft="false">
+                <MudTextField T="string" Label="نام کاربری" Required="true" RequiredError="وارد کردن این فیلد اجباری است"
+                              @bind-Value="_model.UserName" Validation="@(new Func<string, IEnumerable<string>>(UsernameValidation))" Immediate="true"/>
+                <MudTextField InputType="InputType.Password" Label="رمز عبور" Required="true" RequiredError="وارد کردن این فیلد اجباری است" Immediate="true"
+                              @bind-Value="_model.Password" Class="mt-4" Validation="@(new Func<string, IEnumerable<string>>(PasswordValidation))" />
+            </MudRTLProvider>
+        </MudCardContent>
+        <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
 
-    <MudCardActions>
-        <MudButton Color="Color.Primary" Variant="Variant.Filled">Okeye</MudButton>
-    </MudCardActions>
+        <MudCardActions Class="mt-2">
+            <MudButton Color="Color.Primary" Variant="Variant.Filled" Disabled="!_isSuccess" OnClick="Login">ورود</MudButton>
+        </MudCardActions>
+    </MudForm>
 </MudCarouselItem>
 
 @code {
     [Parameter, EditorRequired]
     public Action NextCarouseAction { get; set; } = null!;
+
+    private MudForm _form = new();
+    private bool _isSuccess;
+    private string[] _errors = { };
+
+    private LoginDTO _model = new();
+
+
+    private async void Login()
+    {
+        await _form.Validate();
+        await Task.Delay(1000);
+    }
+
+    private IEnumerable<string> UsernameValidation(string username)
+    {
+        if (string.IsNullOrWhiteSpace(username))
+        {
+            yield return "وارد کردن این فیلد اجباری است";
+            yield break;
+        }
+        if (username.Length < 5)
+            yield return "نام کاربری نباید کمتر از 5 کاراکتر باشد";
+        if (username.Length > 20)
+            yield return "نام کاربری نباید بیشتر از 20 کاراکتر باشد";
+        if (!Regex.IsMatch(username, "^[a-zA-Z][a-zA-Z0-9_]{4,19}$"))
+            yield return "لطفا فقط از حروف انگلیسی و اعداد و اندرلاین استفاده کنید.";
+    }
+
+    private IEnumerable<string> PasswordValidation(string pw)
+    {
+        if (string.IsNullOrWhiteSpace(pw))
+        {
+            yield return "وارد کردن این فیلد اجباری است";
+            yield break;
+        }
+        if (pw.Length < 8)
+            yield return "رمز عبور نباید کمتر از 8 کاراکتر باشد";
+        if (pw.Length > 200)
+            yield return "رمز عبور نباید بیشتر از 200 کاراکتر باشد";
+    }
+
 }

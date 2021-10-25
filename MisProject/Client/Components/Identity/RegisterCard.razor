@@ -12,31 +12,35 @@
     </MudCardHeader>
     <MudDivider DividerType="DividerType.Middle" />
 
-    <MudCardContent>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-    </MudCardContent>
-    <MudDivider DividerType="DividerType.Middle" />
+    <MudForm @ref="_form" @bind-IsValid="_isSuccess" @bind-Errors="_errors">
+        <MudCardContent>
+            <MudRTLProvider RightToLeft="false">
+                
+                <MudTextField i />
 
-    <MudCardActions>
-        <MudButton Color="Color.Primary" Variant="Variant.Filled">Okeye</MudButton>
-    </MudCardActions>
+            </MudRTLProvider>
+        </MudCardContent>
+        <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
+
+        <MudCardActions Class="mt-2">
+            <MudButton Color="Color.Primary" Variant="Variant.Filled" Disabled="!_isSuccess" OnClick="Register">عضویت</MudButton>
+        </MudCardActions>
+    </MudForm>
 </MudCarouselItem>
 
 @code{
     [Parameter, EditorRequired]
     public Action NextCarouseAction { get; set; } = null!;
+
+    private MudForm _form = new();
+    private bool _isSuccess;
+    private string[] _errors = { };
+
+    private RegisterDTO _model = new();
+
+    private async Task Register()
+    {
+        await Task.Delay(1000);
+    }
+
 }

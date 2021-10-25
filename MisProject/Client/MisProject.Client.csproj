@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\ClientLibraries\ClientLibraries.csproj" />
+    <ProjectReference Include="..\ClientLibraries\ClientLibraries.csproj" />
     <ProjectReference Include="..\ThemeStatics\ThemeStatics.csproj" />
   </ItemGroup>
 

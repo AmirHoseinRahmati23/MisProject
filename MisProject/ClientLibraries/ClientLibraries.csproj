@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ClientLibraries\ClientLibraries.csproj" />
-    <ProjectReference Include="..\MisProject\DbLayer\DbLayer.csproj" />
+    <Folder Include="DTOs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="10.3.4" />
   </ItemGroup>
 
 </Project>
