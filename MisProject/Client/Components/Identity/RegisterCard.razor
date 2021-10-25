@@ -7,28 +7,67 @@
             <MudText Typo="Typo.h5">عضویت</MudText>
         </CardHeaderContent>
         <CardHeaderActions>
-            <MudButton Class="mt-2" Variant="Variant.Text" OnClick="NextCarouseAction.Invoke">حساب دارید؟ هم اکنون وارد شوید</MudButton>
+            <MudButton Class="mt-2" Variant="Variant.Text" OnClick="NextCarouseAction.Invoke">حساب دارید؟ هم اکنون وارد
+                شوید</MudButton>
         </CardHeaderActions>
     </MudCardHeader>
     <MudDivider DividerType="DividerType.Middle" />
 
-    <MudForm @ref="_form" @bind-IsValid="_isSuccess" @bind-Errors="_errors">
+    <MudForm @ref="_form" @bind-IsValid="_isSuccess" @bind-Errors="_errors" Model="_model">
         <MudCardContent>
             <MudRTLProvider RightToLeft="false">
-                
-                <MudTextField i />
+
+                <MudTextField @bind-Value="_model.FirstName" 
+                              Validation="@(modelValidator.ValidateValue)"
+                              For="@(() => _model.FirstName)" 
+                              Immediate="true" 
+                              Label="نام" />
+
+                <MudTextField @bind-Value="_model.LastName"
+                                Validation="@(modelValidator.ValidateValue)"
+                                For="@(() => _model.LastName)" 
+                                Immediate="true" 
+                                Label="نام خانوادگی" />
+
+                <MudTextField @bind-Value="_model.UserName"
+                                Validation="@(modelValidator.ValidateValue)"
+                                For="@(() => _model.UserName)" 
+                                Immediate="true" 
+                                Label="نام کاربری" />
+
+                <MudTextField @bind-Value="_model.Email"
+                                Validation="@(modelValidator.ValidateValue)"
+                                For="@(() => _model.Email)" 
+                                Immediate="true" 
+                                Label="ایمیل" 
+                                InputType="InputType.Email" />
+
+                <MudTextField @bind-Value="_model.Password"
+                                Validation="@(modelValidator.ValidateValue)"
+                                For="@(() => _model.Password)" 
+                                Immediate="true" 
+                                Label="رمز عبور" 
+                                InputType="InputType.Password" />
+
+                <MudTextField @bind-Value="_model.RepeatPassword"
+                                Validation="@(modelValidator.ValidateValue)"
+                                For="@(() => _model.RepeatPassword)" 
+                                Immediate="true" 
+                                Label="تکرار رمز عبور" 
+                                InputType="InputType.Password" />
 
             </MudRTLProvider>
         </MudCardContent>
-        <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
+        <MudDivider DividerType="DividerType.Middle" Class="mt-2" />
 
         <MudCardActions Class="mt-2">
-            <MudButton Color="Color.Primary" Variant="Variant.Filled" Disabled="!_isSuccess" OnClick="Register">عضویت</MudButton>
+            <MudButton Color="Color.Primary" Variant="Variant.Filled" Disabled="!_isSuccess" OnClick="Register">عضویت
+            </MudButton>
         </MudCardActions>
     </MudForm>
 </MudCarouselItem>
 
-@code{
+@code {
     [Parameter, EditorRequired]
     public Action NextCarouseAction { get; set; } = null!;
 
@@ -37,6 +76,7 @@
     private string[] _errors = { };
 
     private RegisterDTO _model = new();
+    private RegisterDTOFluentValidator modelValidator = new();
 
     private async Task Register()
     {
