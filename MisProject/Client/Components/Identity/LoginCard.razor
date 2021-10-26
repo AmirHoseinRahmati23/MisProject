@@ -16,12 +16,12 @@
         <MudCardContent>
             <MudRTLProvider RightToLeft="false">
                 <MudTextField T="string" Label="نام کاربری" Required="true" RequiredError="وارد کردن این فیلد اجباری است"
-                              @bind-Value="_model.UserName" Validation="@(new Func<string, IEnumerable<string>>(UsernameValidation))" Immediate="true"/>
+                              @bind-Value="_model.UserName" Validation="@(new Func<string, IEnumerable<string>>(UsernameValidation))" Immediate="true" />
                 <MudTextField InputType="InputType.Password" Label="رمز عبور" Required="true" RequiredError="وارد کردن این فیلد اجباری است" Immediate="true"
                               @bind-Value="_model.Password" Class="mt-4" Validation="@(new Func<string, IEnumerable<string>>(PasswordValidation))" />
             </MudRTLProvider>
         </MudCardContent>
-        <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
+        <MudDivider DividerType="DividerType.Middle" Class="mt-2" />
 
         <MudCardActions Class="mt-2">
             <MudButton Color="Color.Primary" Variant="Variant.Filled" Disabled="!_isSuccess" OnClick="Login">ورود</MudButton>
@@ -34,7 +34,7 @@
     public Action NextCarouseAction { get; set; } = null!;
 
     private MudForm _form = new();
-    private bool _isSuccess;
+    private bool _isSuccess = false;
     private string[] _errors = { };
 
     private LoginDTO _model = new();
@@ -43,7 +43,8 @@
     private async void Login()
     {
         await _form.Validate();
-        await Task.Delay(1000);
+        if (_isSuccess)
+            await Task.Delay(1000);
     }
 
     private IEnumerable<string> UsernameValidation(string username)

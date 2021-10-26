@@ -46,7 +46,6 @@ public class RegisterDTO
 
     [Display(Name = "تکرار کلمه عبور")]
     [Required(ErrorMessage = "{0} نمیتواند خالی باشد")]
-    [Compare(nameof(Password), ErrorMessage = "رمز عبور مطابقت ندارد")]
     [PasswordPropertyText]
     public string RepeatPassword { get; set; }
 }
@@ -85,14 +84,14 @@ public class RegisterDTOFluentValidator : AbstractValidator<RegisterDTO>
 
         RuleFor(p => p.RepeatPassword)
             .NotEmpty().WithMessage("تکرار رمز عبور نمیتواند خالی باشد")
-            .Equal(p => p.Password).WithMessage("رمز عبور مطابقت ندارد");
+            .Equal(p => p.Password).WithMessage("رمز عبور و تکرار آن باید یکسان باشد");
     }
 
     public Func<object, string, Task<IEnumerable<string>>> ValidateValue => async (model, propertyName) =>
     {
         var result = await ValidateAsync(ValidationContext<RegisterDTO>.CreateWithOptions((RegisterDTO)model, x => x.IncludeProperties(propertyName)));
-        return result.IsValid 
-            ? Array.Empty<string>() 
+        return result.IsValid
+            ? Array.Empty<string>()
             : result.Errors.Select(e => e.ErrorMessage);
     };
 }
