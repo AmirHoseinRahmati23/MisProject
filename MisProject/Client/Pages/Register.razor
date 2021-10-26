@@ -1,0 +1,35 @@
+﻿@page "/Register"
+@page "/Login"
+@layout IndexLayout
+@using MisProject.Client.Components.Identity
+
+<PageTitle>احراز هویت</PageTitle>
+
+<MudGrid Justify="Justify.Center">
+    <MudItem xs="11" md="6" Class="mt-4">
+        <MudCard>
+            <MudCarousel @ref="_carousel" Style="@_height" ShowArrows="false" ShowDelimiters="false" AutoCycle="false" TData="object">
+
+                <LoginCard NextCarouseAction="NextCarouseAction"/>
+                <RegisterCard NextCarouseAction="NextCarouseAction"/>
+
+            </MudCarousel>
+        </MudCard>
+    </MudItem>
+</MudGrid>
+
+@code {
+    private string _height = "height: 350px";
+    private MudCarousel<object> _carousel = new();
+
+    private void NextCarouseAction()
+    {
+        _carousel.Next();
+        _height = 
+            _height == "height: 350px" 
+            ? "height: 650px" 
+            : "height: 350px";
+        StateHasChanged();
+    }
+
+}
