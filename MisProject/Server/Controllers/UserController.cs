@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MisProject.Server.Controllers;
 
@@ -30,10 +31,18 @@ public class UserController : Controller
     /// </remarks>
     /// <returns>A DbUserResponses</returns>
     /// <response code="200">Returns the DbResponse of new created user</response>
+    /// <response code="400">Returns if DtoValidationField</response>
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<DbResponse<User, RegisterError>>> Register(RegisterDTO dto)
+    [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(DbResponse<RegisterDTO, RegisterError>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationResult))]
+    public async Task<ActionResult<DbResponse<RegisterDTO, RegisterError>>> Register(RegisterDTO dto)
     {
+        var dtoFluentValidator = new RegisterDTOFluentValidator();
+        var validationResult = await dtoFluentValidator.ValidateAsync(dto);
+
+        if (!validationResult.IsValid)
+            return BadRequest(validationResult);
+
         var result = await _userService.RegisterUser(dto);
         return Ok(result);
     }

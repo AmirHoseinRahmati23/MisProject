@@ -17,5 +17,5 @@ public interface IUserService
     /// </summary>
     Task<DbResponse<User, RegisterError>> AddUser(User user);
 
-    Task<DbResponse<User, RegisterError>> RegisterUser(RegisterDTO registerDto);
+    Task<DbResponse<RegisterDTO, RegisterError>> RegisterUser(RegisterDTO registerDto);
 }

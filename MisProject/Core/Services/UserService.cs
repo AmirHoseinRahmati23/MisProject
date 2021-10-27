@@ -51,7 +51,7 @@ public class UserService : IUserService
         return result;
     }
 
-    public async Task<DbResponse<User, RegisterError>> RegisterUser(RegisterDTO registerDto)
+    public async Task<DbResponse<RegisterDTO, RegisterError>> RegisterUser(RegisterDTO registerDto)
     {
         var user = new User
         {
@@ -62,6 +62,25 @@ public class UserService : IUserService
             Password = PasswordHelper.EncodePasswordMd5(registerDto.Password),
         };
 
-        return await AddUser(user);
+        var result = await AddUser(user);
+
+        var returnValue = new DbResponse<RegisterDTO, RegisterError>
+        {
+            Success = result.Success,
+            Errors = result.Errors
+        };
+
+        if (result.Success && result.Value != null)
+        {
+            returnValue.Value = new()
+            {
+                UserName = result.Value.UserName,
+                Email = result.Value.Email,
+                FirstName = result.Value.FirstName,
+                LastName = result.Value.LastName,
+            };
+        }
+
+        return returnValue;
     }
 }
