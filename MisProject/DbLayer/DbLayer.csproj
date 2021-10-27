@@ -18,4 +18,8 @@
 		<Folder Include="Entities\Users\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\ClientLibraries\ClientLibraries.csproj" />
+	</ItemGroup>
+
 </Project>

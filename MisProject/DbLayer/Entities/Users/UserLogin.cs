@@ -1,4 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using ClientLibraries.Converters;
+using ClientLibraries.DTOs;
 
 namespace DbLayer.Entities.Users;
 
@@ -41,7 +44,7 @@ public partial class User
     public string FixedUserName
     {
         get => _fixedUserName;
-        private set => _fixedUserName = value.ToUpper().Trim();
+        private set => _fixedUserName = value.ToFixedText();
     }
 
     #endregion
@@ -70,7 +73,7 @@ public partial class User
     public string FixedEmail
     {
         get => _fixedEmail;
-        private set => _fixedEmail = value.ToUpper().Trim();
+        private set => _fixedEmail = value.ToFixedText();
     }
 
     #endregion
@@ -94,19 +97,20 @@ public partial class User
     [Required(ErrorMessage = "{0} نمیتواند خالی باشد")]
     [MinLength(8, ErrorMessage = "فیلد {0} باید حداقل {1} کاراکتر باشد.")]
     [MaxLength(200, ErrorMessage = "{0} نمیتواند بیش از {1} کاراکتر باشد")]
+    [JsonIgnore]
     public string Password { get; set; }
 
     /// <summary>
     /// Change in every update
     /// </summary>
-    [Required, MaxLength(50)]
+    [Required, MaxLength(50), JsonIgnore]
     public string IdentityCode { get; set; }
 
     /// <summary>
     /// Email Activation code.
     /// Change when Security Items edited.
     /// </summary>
-    [Required, MaxLength(50)]
+    [Required, MaxLength(50), JsonIgnore]
     public string ActiveCode { get; set; }
 
     #endregion
