@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using ClientLibraries.Converters;
 using ClientLibraries.DTOs;
 
@@ -96,19 +97,20 @@ public partial class User
     [Required(ErrorMessage = "{0} نمیتواند خالی باشد")]
     [MinLength(8, ErrorMessage = "فیلد {0} باید حداقل {1} کاراکتر باشد.")]
     [MaxLength(200, ErrorMessage = "{0} نمیتواند بیش از {1} کاراکتر باشد")]
+    [JsonIgnore]
     public string Password { get; set; }
 
     /// <summary>
     /// Change in every update
     /// </summary>
-    [Required, MaxLength(50)]
+    [Required, MaxLength(50), JsonIgnore]
     public string IdentityCode { get; set; }
 
     /// <summary>
     /// Email Activation code.
     /// Change when Security Items edited.
     /// </summary>
-    [Required, MaxLength(50)]
+    [Required, MaxLength(50), JsonIgnore]
     public string ActiveCode { get; set; }
 
     #endregion

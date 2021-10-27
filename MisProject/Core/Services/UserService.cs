@@ -28,9 +28,9 @@ public class UserService : IUserService
         => await _db.Users.FirstOrDefaultAsync(x => x.FixedUserName == userName.ToFixedText());
 
     /// <inheritdoc/>
-    public async Task<DbResponses<User, RegisterError>> AddUser(User user)
+    public async Task<DbResponse<User, RegisterError>> AddUser(User user)
     {
-        var result = new DbResponses<User, RegisterError>();
+        var result = new DbResponse<User, RegisterError>();
 
         if (await IsUserNameExists(user.UserName))
             result.AddError(RegisterError.UserNameExists, RegisterError.UserNameExists.ToErrorText());
@@ -51,7 +51,7 @@ public class UserService : IUserService
         return result;
     }
 
-    public async Task<DbResponses<User, RegisterError>> RegisterUser(RegisterDTO registerDto)
+    public async Task<DbResponse<User, RegisterError>> RegisterUser(RegisterDTO registerDto)
     {
         var user = new User
         {

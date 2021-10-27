@@ -2,7 +2,7 @@
 
 namespace ClientLibraries.DTOs;
 
-public class DbResponses<TType, TError>
+public class DbResponse<TType, TError>
 {
     public bool Success { get; set; } = true;
 

@@ -15,7 +15,7 @@ public interface IUserService
     /// <summary>
     /// Note: Password should be hashed
     /// </summary>
-    Task<DbResponses<User, RegisterError>> AddUser(User user);
+    Task<DbResponse<User, RegisterError>> AddUser(User user);
 
-    Task<DbResponses<User, RegisterError>> RegisterUser(RegisterDTO registerDto);
+    Task<DbResponse<User, RegisterError>> RegisterUser(RegisterDTO registerDto);
 }
