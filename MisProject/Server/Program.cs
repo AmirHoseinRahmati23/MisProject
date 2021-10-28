@@ -81,7 +81,10 @@ builder.Services.AddResponseCompression(opts =>
 
 builder.Services.AddDbContext<MisDbContext>(p =>
     p.UseSqlServer(builder.Configuration.GetConnectionString("MisDbContext")));
+
 builder.Services.AddTransient<IUserService, UserService>();
+
+builder.Services.AddSingleton<IJwtHelper, JwtHelper>();
 
 var app = builder.Build();
 
