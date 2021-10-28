@@ -9,13 +9,17 @@ public interface IUserCaller
     /// Status 200: Cast to DbResponse<RegisterDTO, RegisterError>, Status 400: Cast to ValidationResult
     /// </summary>
     Task<HttpResponseMessage> Register(RegisterDTO dto);
+
+    /// <summary>
+    /// Return ApplicationUser? in each status
+    /// </summary>
+    Task<ApplicationUser?> GetUserByJwt(string jwtToken);
 }
 
 public class UserCaller : IUserCaller
 {
     private readonly HttpClient _client;
     private string _controllerAddress = "/Api/V1/User";
-
 
     public UserCaller(HttpClient client)
     {
@@ -34,5 +38,24 @@ public class UserCaller : IUserCaller
         {
             return new HttpResponseMessage(0);
         }
+    }
+
+    public async Task<ApplicationUser?> GetUserByJwt(string jwtToken)
+    {
+        try
+        {
+            var result = await _client.GetAsync(_controllerAddress + $"?jwtToken={jwtToken}");
+
+            if (result.IsSuccessStatusCode)
+            {
+                var applicationUser = await result.Content.ReadFromJsonAsync<ApplicationUser?>();
+                return applicationUser;
+            }
+        }
+        catch
+        {
+        }
+
+        return null;
     }
 }
