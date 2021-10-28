@@ -1,4 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using ClientLibraries.Converters;
+using ClientLibraries.DTOs;
 
 namespace DbLayer.Entities.Users;
 
@@ -41,7 +44,7 @@ public partial class User
     public string FixedUserName
     {
         get => _fixedUserName;
-        private set => _fixedUserName = value.ToUpper().Trim();
+        private set => _fixedUserName = value.ToFixedText();
     }
 
     #endregion
@@ -70,7 +73,7 @@ public partial class User
     public string FixedEmail
     {
         get => _fixedEmail;
-        private set => _fixedEmail = value.ToUpper().Trim();
+        private set => _fixedEmail = value.ToFixedText();
     }
 
     #endregion
