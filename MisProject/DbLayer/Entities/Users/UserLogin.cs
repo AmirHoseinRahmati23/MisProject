@@ -23,7 +23,7 @@ public partial class User
 
     #region Username
 
-    private string _userName;
+    private string _userName = null!;
 
     [Display(Name = "نام کاربری", Prompt = "نام کاربری")]
     [Required(ErrorMessage = "{0} نمیتواند خالی باشد")]
@@ -38,7 +38,7 @@ public partial class User
 
     //----------------------------------------------------------------------------------------------
 
-    private string _fixedUserName;
+    private string _fixedUserName = null!;
 
     [Required, MaxLength(20)]
     public string FixedUserName
@@ -51,7 +51,7 @@ public partial class User
 
     #region Email
 
-    private string _email;
+    private string _email = null!;
 
     [EmailAddress(ErrorMessage = "ایمیل شما معتبر نمیباشد")]
     [Display(Name = "ایمیل", Prompt = "Name@Example.com")]
@@ -67,7 +67,7 @@ public partial class User
 
     //-----------------------------------------------------------------------------------------------------
 
-    private string _fixedEmail;
+    private string _fixedEmail = null!;
 
     [Required, MaxLength(100), DataType(DataType.EmailAddress)]
     public string FixedEmail
@@ -97,20 +97,20 @@ public partial class User
     [Required(ErrorMessage = "{0} نمیتواند خالی باشد")]
     [MinLength(8, ErrorMessage = "فیلد {0} باید حداقل {1} کاراکتر باشد.")]
     [MaxLength(200, ErrorMessage = "{0} نمیتواند بیش از {1} کاراکتر باشد")]
-    public string Password { get; set; }
+    public string Password { get; set; } = null!;
 
     /// <summary>
     /// Change in every update
     /// </summary>
     [Required, MaxLength(50)]
-    public string IdentityCode { get; set; }
+    public string IdentityCode { get; set; } = null!;
 
     /// <summary>
     /// Email Activation code.
     /// Change when Security Items edited.
     /// </summary>
     [Required, MaxLength(50)]
-    public string ActiveCode { get; set; }
+    public string ActiveCode { get; set; } = null!;
 
     #endregion
 }
@@ -120,7 +120,7 @@ public partial class User
 {
     #region Relations
 
-    public ICollection<UserRole> UserRoles { get; set; }
+    public ICollection<UserRole> UserRoles { get; set; } = null!;
 
     #endregion
 

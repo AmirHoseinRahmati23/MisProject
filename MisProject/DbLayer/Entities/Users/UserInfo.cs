@@ -12,7 +12,7 @@ public partial class User
     [MaxLength(30, ErrorMessage = "{0} نمیتواند بیش از {1} کاراکتر باشد")]
     //TODO: Persian Check RegEx here
     // [RegularExpression("MyAwesomeRegEx")]
-    public string FirstName { get; set; }
+    public string FirstName { get; set; } = null!;
 
     [Display(Name = "نام خانوادگی")]
     [Required(ErrorMessage = "{0} نمیتواند خالی باشد")]
@@ -20,7 +20,7 @@ public partial class User
     [MaxLength(30, ErrorMessage = "{0} نمیتواند بیش از {1} کاراکتر باشد")]
     //TODO: Persian Check RegEx here
     // [RegularExpression("MyAwesomeRegEx")]
-    public string LastName { get; set; }
+    public string LastName { get; set; } = null!;
 
     [Display(Name = "نام پدر")]
     [MinLength(3, ErrorMessage = "فیلد {0} باید حداقل {1} کاراکتر باشد.")]

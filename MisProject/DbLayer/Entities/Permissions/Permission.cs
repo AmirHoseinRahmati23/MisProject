@@ -7,7 +7,6 @@ public class Permission
 {
     public Permission()
     {
-
     }
 
     public Permission(string permissionTitle, int? parentPermissionId = null) : this()
@@ -27,7 +26,7 @@ public class Permission
     [Required(ErrorMessage = "{0} نمیتواند خالی باشد")]
     [MaxLength(200, ErrorMessage = "{0} نمیتواند بیش از {1} کاراکتر باشد")]
     [MinLength(3, ErrorMessage = "فیلد {0} باید حداقل {1} کاراکتر باشد.")]
-    public string PermissionTitle { get; set; }
+    public string PermissionTitle { get; set; } = null!;
 
     public int? ParentPermissionId { get; set; }
 
@@ -36,8 +35,8 @@ public class Permission
     #region Relations
 
     public Permission? ParentPermission { get; set; }
-    public ICollection<Permission> SubPermissions { get; set; }
-    public ICollection<RolePermission> RolePermissions { get; set; }
+    public ICollection<Permission> SubPermissions { get; set; } = null!;
+    public ICollection<RolePermission> RolePermissions { get; set; } = null!;
 
     #endregion
 }

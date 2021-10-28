@@ -24,8 +24,8 @@ public class RolePermission
 
     #region Relations
 
-    public Permission Permission { get; set; }
-    public Role Role { get; set; }
+    public Permission Permission { get; set; } = null!;
+    public Role Role { get; set; } = null!;
 
     #endregion
 }

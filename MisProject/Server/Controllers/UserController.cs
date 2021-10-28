@@ -37,7 +37,7 @@ public class UserController : Controller
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationResult))]
     public async Task<ActionResult<DbResponse<RegisterDTO, RegisterError>>> Register([FromBody] RegisterDTO dto)
     {
-        var dtoFluentValidator = new RegisterDTOFluentValidator();
+        var dtoFluentValidator = new RegisterDtoFluentValidator();
         var validationResult = await dtoFluentValidator.ValidateAsync(dto);
 
         if (!validationResult.IsValid)

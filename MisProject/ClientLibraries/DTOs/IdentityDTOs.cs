@@ -13,7 +13,7 @@ public class RegisterDTO
     [MaxLength(30, ErrorMessage = "{0} نمیتواند بیش از {1} کاراکتر باشد")]
     //TODO: Persian Check RegEx here
     // [RegularExpression("MyAwesomeRegEx")]
-    public string FirstName { get; set; }
+    public string FirstName { get; set; } = null!;
 
     [Display(Name = "نام خانوادگی")]
     [Required(ErrorMessage = "{0} نمیتواند خالی باشد")]
@@ -21,14 +21,14 @@ public class RegisterDTO
     [MaxLength(30, ErrorMessage = "{0} نمیتواند بیش از {1} کاراکتر باشد")]
     //TODO: Persian Check RegEx here
     // [RegularExpression("MyAwesomeRegEx")]
-    public string LastName { get; set; }
+    public string LastName { get; set; } = null!;
 
     [Display(Name = "نام کاربری", Prompt = "نام کاربری")]
     [Required(ErrorMessage = "{0} نمیتواند خالی باشد")]
     [MinLength(5, ErrorMessage = "فیلد {0} باید حداقل {1} کاراکتر باشد.")]
     [MaxLength(20, ErrorMessage = "{0} نمیتواند بیش از {1} کاراکتر باشد")]
     [RegularExpression("^[a-zA-Z][a-zA-Z0-9_]{4,19}$", ErrorMessage = "لطفا فقط از حروف انگلیسی و اعداد و اندرلاین استفاده کنید.")]
-    public string UserName { get; set; }
+    public string UserName { get; set; } = null!;
 
     [EmailAddress(ErrorMessage = "ایمیل شما معتبر نمیباشد")]
     [Display(Name = "ایمیل", Prompt = "Name@Example.com")]
@@ -36,7 +36,7 @@ public class RegisterDTO
     [MinLength(3, ErrorMessage = "فیلد {0} باید حداقل {1} کاراکتر باشد.")]
     [MaxLength(100, ErrorMessage = "{0} نمیتواند بیش از {1} کاراکتر باشد")]
     [DataType(DataType.EmailAddress)]
-    public string Email { get; set; }
+    public string Email { get; set; } = null!;
 
     [Display(Name = "رمز عبور", Prompt = "رمز عبور")]
     [Required(ErrorMessage = "{0} نمیتواند خالی باشد")]
@@ -44,18 +44,18 @@ public class RegisterDTO
     [MaxLength(200, ErrorMessage = "{0} نمیتواند بیش از {1} کاراکتر باشد")]
     [PasswordPropertyText]
     [SecurityIgnored]
-    public string Password { get; set; }
+    public string Password { get; set; } = null!;
 
     [Display(Name = "تکرار کلمه عبور")]
     [Required(ErrorMessage = "{0} نمیتواند خالی باشد")]
     [PasswordPropertyText]
     [SecurityIgnored]
-    public string RepeatPassword { get; set; }
+    public string RepeatPassword { get; set; } = null!;
 }
 
-public class RegisterDTOFluentValidator : AbstractValidator<RegisterDTO>
+public class RegisterDtoFluentValidator : AbstractValidator<RegisterDTO>
 {
-    public RegisterDTOFluentValidator()
+    public RegisterDtoFluentValidator()
     {
         RuleFor(x => x.FirstName)
             .NotEmpty().WithMessage("نام نمیتواند خالی باشد")
@@ -106,7 +106,7 @@ public class LoginDTO
     [MinLength(5, ErrorMessage = "فیلد {0} باید حداقل {1} کاراکتر باشد.")]
     [MaxLength(20, ErrorMessage = "{0} نمیتواند بیش از {1} کاراکتر باشد")]
     [RegularExpression("^[a-zA-Z][a-zA-Z0-9_]{4,19}$", ErrorMessage = "لطفا فقط از حروف انگلیسی و اعداد و اندرلاین استفاده کنید.")]
-    public string UserName { get; set; }
+    public string UserName { get; set; } = null!;
 
 
     [Display(Name = "رمز عبور", Prompt = "رمز عبور")]
@@ -114,5 +114,5 @@ public class LoginDTO
     [MinLength(8, ErrorMessage = "فیلد {0} باید حداقل {1} کاراکتر باشد.")]
     [MaxLength(200, ErrorMessage = "{0} نمیتواند بیش از {1} کاراکتر باشد")]
     [PasswordPropertyText]
-    public string Password { get; set; }
+    public string Password { get; set; } = null!;
 }

@@ -7,10 +7,9 @@ public class Role
 {
     public Role()
     {
-
     }
 
-    public Role(string roleName)
+    public Role(string roleName) : this()
     {
         RoleName = roleName;
     }
@@ -21,14 +20,14 @@ public class Role
     [Required(ErrorMessage = "{0} نمیتواند خالی باشد")]
     [MaxLength(50, ErrorMessage = "{0} نمیتواند بیش از {1} کاراکتر باشد")]
     [MinLength(3, ErrorMessage = "فیلد {0} باید حداقل {1} کاراکتر باشد.")]
-    public string RoleName { get; set; }
+    public string RoleName { get; set; } = null!;
 
     public bool IsDeleted { get; set; }
 
     #region Relations
 
-    public ICollection<UserRole> UserRoles { get; set; }
-    public ICollection<RolePermission> RolePermissions { get; set; }
+    public ICollection<UserRole> UserRoles { get; set; } = null!;
+    public ICollection<RolePermission> RolePermissions { get; set; } = null!;
 
     #endregion
 }

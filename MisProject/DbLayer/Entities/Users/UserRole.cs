@@ -23,8 +23,8 @@ public class UserRole
 
     #region Relations
 
-    public User User { get; set; }
-    public Role Role { get; set; }
+    public User User { get; set; } = null!;
+    public Role Role { get; set; } = null!;
 
     #endregion
 }
