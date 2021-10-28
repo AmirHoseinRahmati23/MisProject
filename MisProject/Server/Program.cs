@@ -84,7 +84,7 @@ builder.Services.AddDbContext<MisDbContext>(p =>
 
 builder.Services.AddTransient<IUserService, UserService>();
 
-builder.Services.AddSingleton<IJwtHelper, JwtHelper>();
+builder.Services.AddTransient<IJwtHelper, JwtHelper>();
 
 var app = builder.Build();
 

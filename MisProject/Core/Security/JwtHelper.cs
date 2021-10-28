@@ -103,8 +103,7 @@ public class JwtHelper : IJwtHelper
         catch (Exception ex)
         {
             //logging the error and returning null
-            Console.WriteLine("Exception : " + ex.Message);
-            return null;
+            _logger.LogError($"Exception: {ex}");
         }
 
         //returning null if token is not validated
