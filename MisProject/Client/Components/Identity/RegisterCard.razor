@@ -1,4 +1,8 @@
-﻿<MudCarouselItem Transition="Transition.Slide">
+﻿@using FluentValidation.Results
+@inject ISnackbar Snackbar
+@inject IUserCaller userCaller
+
+<MudCarouselItem Transition="Transition.Slide">
     <MudCardHeader Class="justify-center">
         <CardHeaderAvatar>
             <MudIcon Icon="@Icons.Filled.AppRegistration" Size="Size.Large" />
@@ -83,7 +87,45 @@
     {
         await _form.Validate();
         if (_isSuccess)
-            await Task.Delay(1000);
+        {
+            var result = await userCaller.Register(_model);
+            if (result.StatusCode == HttpStatusCode.OK)
+            {
+                await HandleSuccessResult(result);
+            }
+            else if (result.StatusCode == HttpStatusCode.BadRequest)
+            {
+                var content = await result.Content.ReadFromJsonAsync<ValidationResult>();
+                if (content != null)
+                {
+                    Snackbar.AddErrorList(content.Errors.Select(p => p.ErrorMessage));
+                }
+            }
+            else
+            {
+                Snackbar.AddUnknownError();
+            }
+        }
+    }
+
+    private async Task HandleSuccessResult(HttpResponseMessage responseMessage)
+    {
+        var content = await responseMessage.Content.ReadFromJsonAsync<DbResponse<RegisterDTO, RegisterError>>();
+        if (content == null)
+        {
+            Snackbar.AddUnknownError();
+            return;
+        }
+
+        if (content.Success)
+        {
+            Snackbar.Add("ثبت نام با موفقیت انجام شد.", Severity.Success);
+            NextCarouseAction.Invoke();
+        }
+        else
+        {
+            Snackbar.AddErrorList(content.Errors.Values);
+        }
     }
 
 }

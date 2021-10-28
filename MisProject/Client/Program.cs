@@ -27,6 +27,6 @@ builder.Services.AddMudServices(p =>
     p.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
 });
 
-builder.Services.AddTransient(IUserCaller, UserCaller);
+builder.Services.AddTransient<IUserCaller, UserCaller>();
 
 await builder.Build().RunAsync();
