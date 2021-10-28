@@ -4,6 +4,8 @@ global using MisProject.Client;
 global using MudBlazor;
 global using MudBlazor.Services;
 
+global using ClientLibraries.HttpCallers;
+
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
@@ -24,5 +26,7 @@ builder.Services.AddMudServices(p =>
     p.SnackbarConfiguration.ShowCloseIcon = true;
     p.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
 });
+
+builder.Services.AddTransient(IUserCaller, UserCaller);
 
 await builder.Build().RunAsync();
