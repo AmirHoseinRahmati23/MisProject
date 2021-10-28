@@ -5,6 +5,7 @@ global using MudBlazor;
 global using MudBlazor.Services;
 
 global using ClientLibraries.HttpCallers;
+using Blazored.LocalStorage;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -28,5 +29,7 @@ builder.Services.AddMudServices(p =>
 });
 
 builder.Services.AddTransient<IUserCaller, UserCaller>();
+
+builder.Services.AddBlazoredLocalStorage();
 
 await builder.Build().RunAsync();
