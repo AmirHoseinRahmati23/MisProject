@@ -43,13 +43,13 @@ public class RegisterDTO
     [MinLength(8, ErrorMessage = "فیلد {0} باید حداقل {1} کاراکتر باشد.")]
     [MaxLength(200, ErrorMessage = "{0} نمیتواند بیش از {1} کاراکتر باشد")]
     [PasswordPropertyText]
-    [JsonIgnore]
+    [SecurityIgnored]
     public string Password { get; set; }
 
     [Display(Name = "تکرار کلمه عبور")]
     [Required(ErrorMessage = "{0} نمیتواند خالی باشد")]
     [PasswordPropertyText]
-    [JsonIgnore]
+    [SecurityIgnored]
     public string RepeatPassword { get; set; }
 }
 
