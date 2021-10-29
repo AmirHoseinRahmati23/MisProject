@@ -5,6 +5,8 @@ using System.Text.Json.Serialization;
 
 namespace ClientLibraries.DTOs;
 
+#region Register
+
 public class RegisterDTO
 {
     [Display(Name = "نام")]
@@ -99,6 +101,10 @@ public class RegisterDtoFluentValidator : AbstractValidator<RegisterDTO>
     };
 }
 
+#endregion
+
+#region Login
+
 public class LoginDTO
 {
     [Display(Name = "نام کاربری", Prompt = "نام کاربری")]
@@ -115,4 +121,50 @@ public class LoginDTO
     [MaxLength(200, ErrorMessage = "{0} نمیتواند بیش از {1} کاراکتر باشد")]
     [PasswordPropertyText]
     public string Password { get; set; } = null!;
+}
+
+public class LoginDtoFluentValidator : AbstractValidator<LoginDTO>
+{
+    public LoginDtoFluentValidator()
+    {
+        RuleFor(p => p.UserName)
+            .NotEmpty().WithMessage("نام کاربری نمیتواند خالی باشد")
+            .MinimumLength(5).WithMessage("نام کاربری باید حداقل 5 کاراکتر باشد")
+            .MaximumLength(20).WithMessage("نام کاربری باید حداکثر 20 کاراکتر باشد")
+            .Matches("^[a-zA-Z][a-zA-Z0-9_]{4,19}$").WithMessage("لطفا فقط از حروف انگلیسی و اعداد و اندرلاین استفاده کنید.");
+
+        RuleFor(p => p.Password)
+            .NotEmpty().WithMessage("رمز عبور نمیتواند خالی باشد")
+            .MinimumLength(8).WithMessage("رمز عبور باید حداقل 8 کاراکتر باشد")
+            .MaximumLength(200).WithMessage("رمز عبور باید حداکثر 200 کاراکتر باشد");
+    }
+
+    public Func<object, string, Task<IEnumerable<string>>> ValidateValue => async (model, propertyName) =>
+    {
+        var result = await ValidateAsync(ValidationContext<LoginDTO>.CreateWithOptions((LoginDTO)model, x => x.IncludeProperties(propertyName)));
+        return result.IsValid
+            ? Array.Empty<string>()
+            : result.Errors.Select(e => e.ErrorMessage);
+    };
+}
+
+#endregion
+
+public class ApplicationUser
+{
+    public ApplicationUser(int userId, string userName, string email, string fullName)
+    {
+        UserId = userId;
+        UserName = userName;
+        Email = email;
+        FullName = fullName;
+    }
+
+    public int UserId { get; set; }
+
+    public string UserName { get; set; }
+
+    public string Email { get; set; }
+
+    public string FullName { get; set; }
 }

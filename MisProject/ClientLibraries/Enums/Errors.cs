@@ -9,6 +9,14 @@ public static class ErrorEnumsConvertor
         RegisterError.DtoValidationField => "اطلاعات وارد شده نادرست است",
         _ => throw new ArgumentOutOfRangeException(nameof(error), error, null)
     };
+
+    public static string ToErrorText(this LoginError error) => error switch
+    {
+        LoginError.UserPasswordWrong => "نام کاربری یا رمز عبور غلط است",
+        LoginError.EmailActivationRequired => "تایید ایمیل اجباری است",
+        LoginError.PhoneActivationRequired => "تایید شماره تلفن اجباری است",
+        _ => throw new ArgumentOutOfRangeException(nameof(error), error, null)
+    };
 }
 
 public enum RegisterError
@@ -16,4 +24,11 @@ public enum RegisterError
     UserNameExists,
     EmailExists,
     DtoValidationField,
+}
+
+public enum LoginError
+{
+    UserPasswordWrong,
+    EmailActivationRequired,
+    PhoneActivationRequired,
 }
