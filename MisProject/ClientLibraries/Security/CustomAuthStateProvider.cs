@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Net.Http.Headers;
+using System.Security.Claims;
 using Blazored.LocalStorage;
 using ClientLibraries.DTOs;
 using ClientLibraries.HttpCallers;
@@ -48,4 +49,29 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
         return await _userCaller.GetUserByJwt(jwtToken);
     }
 
+}
+
+
+public class CustomAuthorizationHandler : DelegatingHandler
+{
+    private readonly ILocalStorageService _localStorageService;
+
+    public CustomAuthorizationHandler(ILocalStorageService localStorageService)
+    {
+        //injecting local storage service
+        _localStorageService = localStorageService;
+    }
+
+    protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+    {
+        //getting token from the localstorage
+        var jwtToken = await _localStorageService.GetItemAsync<string>("jwt_token");
+
+        //adding the token in authorization header
+        if (jwtToken != null)
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
+
+        //sending the request
+        return await base.SendAsync(request, cancellationToken);
+    }
 }
