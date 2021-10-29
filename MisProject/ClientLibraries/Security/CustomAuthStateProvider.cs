@@ -24,13 +24,14 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
 
         if (currentUser != null)
         {
-            //create a claims
-            var claimEmailAddress = new Claim(ClaimTypes.Name, currentUser.Email);
+            //create claims
+            var claimEmail = new Claim(ClaimTypes.Email, currentUser.Email);
             var claimNameIdentifier = new Claim(ClaimTypes.NameIdentifier, currentUser.UserId.ToString());
-            var claimName = new Claim(ClaimTypes.Name, currentUser.UserName);
+            var claimUserName = new Claim(ClaimTypes.Name, currentUser.UserName);
+            var claimFullName = new Claim(ClaimTypes.GivenName, currentUser.FullName);
 
             //create claimsIdentity
-            var claimsIdentity = new ClaimsIdentity(new[] { claimEmailAddress, claimNameIdentifier, claimName }, "serverAuth");
+            var claimsIdentity = new ClaimsIdentity(new[] { claimEmail, claimUserName, claimNameIdentifier, claimFullName }, "serverAuth");
 
             //create claimsPrincipal
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);

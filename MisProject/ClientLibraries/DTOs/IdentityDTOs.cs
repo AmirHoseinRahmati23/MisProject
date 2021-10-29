@@ -152,11 +152,12 @@ public class LoginDtoFluentValidator : AbstractValidator<LoginDTO>
 
 public class ApplicationUser
 {
-    public ApplicationUser(int userId, string userName, string email)
+    public ApplicationUser(int userId, string userName, string email, string fullName)
     {
         UserId = userId;
         UserName = userName;
         Email = email;
+        FullName = fullName;
     }
 
     public int UserId { get; set; }
@@ -164,4 +165,6 @@ public class ApplicationUser
     public string UserName { get; set; }
 
     public string Email { get; set; }
+
+    public string FullName { get; set; }
 }

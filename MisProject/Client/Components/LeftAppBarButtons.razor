@@ -1,6 +1,18 @@
-﻿
-<MudButton Color="Color.Secondary" Link="login"
-           Variant="Variant.Filled" EndIcon="@Icons.Outlined.AccountCircle">ورود</MudButton>
+﻿@using System.Security.Claims
+@inject ILocalStorageService _localStorageService
+@inject NavigationManager _navigationManager
+
+<AuthorizeView>
+    <NotAuthorized>
+        <MudButton Color="Color.Secondary" Link="login"
+                   Variant="Variant.Filled" EndIcon="@Icons.Outlined.AccountCircle">ورود</MudButton>
+    </NotAuthorized>
+    <Authorized>
+        <MudText Typo="Typo.caption" Class="me-1">خوش امدید @context.User.FindFirst(ClaimTypes.GivenName)?.Value</MudText>
+        <MudButton Color="Color.Inherit" Size="Size.Small" OnClick="LogOut"
+                   Variant="Variant.Outlined" EndIcon="@Icons.Outlined.Logout">خروج</MudButton>
+    </Authorized>
+</AuthorizeView>
 
 <MudTooltip Placement="Placement.Bottom" Text="حمایت مالی">
     <MudIconButton Icon="@Icons.Filled.AttachMoney" Color="Color.Inherit"
@@ -11,3 +23,12 @@
     <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit"
                    Link="https://github.com/DrIt-group/MisProject" Target="_blank" />
 </MudTooltip>
+
+@code
+{
+    async Task LogOut()
+    {
+        await _localStorageService.RemoveItemAsync("jwt_token");
+        _navigationManager.NavigateTo("/", true, true);
+    }
+}

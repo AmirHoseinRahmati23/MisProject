@@ -69,11 +69,11 @@ public class UserController : Controller
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<ApplicationUser?>> GetUserByJwt(string jwtToken)
     {
-        var user = await _jwtHelper.GetUserByJWT(jwtToken);
+        var user = await _jwtHelper.GetUserByJwt(jwtToken);
 
         if (user != null)
         {
-            return Ok(new ApplicationUser(user.UserId, user.UserName, user.Email));
+            return Ok(new ApplicationUser(user.UserId, user.UserName, user.Email, $"{user.FirstName} {user.LastName}"));
         }
 
         return BadRequest();

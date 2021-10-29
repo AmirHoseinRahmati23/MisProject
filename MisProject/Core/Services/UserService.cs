@@ -107,7 +107,7 @@ public class UserService : IUserService
             result.AddError(LoginError.PhoneActivationRequired, LoginError.PhoneActivationRequired.ToErrorText());
 
         if (result.Success)
-            result.Value = new ApplicationUser(user.UserId, user.UserName, user.Email);
+            result.Value = new ApplicationUser(user.UserId, user.UserName, user.Email, $"{user.FirstName} {user.LastName}");
 
         return result;
     }

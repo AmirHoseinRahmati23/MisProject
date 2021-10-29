@@ -19,6 +19,11 @@ public interface IUserCaller
     /// Status 200: Cast to DbResponse<string, LoginError>, Status 400: Cast to ValidationResult
     /// </summary>
     Task<HttpResponseMessage> Login(LoginDTO dto);
+
+    /// <summary>
+    /// Check if user have permission or not.
+    /// </summary>
+    Task<bool> CheckPermission(int permissionId);
 }
 
 public class UserCaller : IUserCaller
@@ -71,12 +76,18 @@ public class UserCaller : IUserCaller
     {
         try
         {
-            var result = await _client.PostAsJsonAsync(_controllerAddress+"/Login", dto);
+            var result = await _client.PostAsJsonAsync(_controllerAddress + "/Login", dto);
             return result;
         }
         catch
         {
             return new HttpResponseMessage(0);
         }
+    }
+
+    /// <inheritdoc />
+    public async Task<bool> CheckPermission(int permissionId)
+    {
+        return await Task.FromResult(permissionId == 2);
     }
 }

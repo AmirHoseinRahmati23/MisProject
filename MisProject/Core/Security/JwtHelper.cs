@@ -12,7 +12,7 @@ public interface IJwtHelper
 {
     string GenerateJwtToken(ApplicationUser user);
 
-    Task<User?> GetUserByJWT(string jwtToken);
+    Task<User?> GetUserByJwt(string jwtToken);
 }
 
 public class JwtHelper : IJwtHelper
@@ -36,11 +36,12 @@ public class JwtHelper : IJwtHelper
 
         //create claims
         var claimEmail = new Claim(ClaimTypes.Email, user.Email);
-        var claimUserName = new Claim(ClaimTypes.Name, user.UserName);
         var claimNameIdentifier = new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString());
+        var claimUserName = new Claim(ClaimTypes.Name, user.UserName);
+        var claimFullName = new Claim(ClaimTypes.GivenName, user.FullName);
 
         //create claimsIdentity
-        var claimsIdentity = new ClaimsIdentity(new[] { claimEmail, claimUserName, claimNameIdentifier }, "serverAuth");
+        var claimsIdentity = new ClaimsIdentity(new[] { claimEmail, claimUserName, claimNameIdentifier, claimFullName }, "serverAuth");
 
         // generate token that is valid for 14 days
         var tokenDescriptor = new SecurityTokenDescriptor
@@ -60,7 +61,7 @@ public class JwtHelper : IJwtHelper
         return tokenHandler.WriteToken(token);
     }
 
-    public async Task<User?> GetUserByJWT(string jwtToken)
+    public async Task<User?> GetUserByJwt(string jwtToken)
     {
         try
         {

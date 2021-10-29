@@ -8,6 +8,7 @@ global using ClientLibraries.HttpCallers;
 
 using Blazored.LocalStorage;
 using ClientLibraries.Security;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -44,6 +45,11 @@ builder.Services.AddHttpClient<IUserCaller, UserCaller>("Client", c =>
 }).AddHttpMessageHandler<CustomAuthorizationHandler>();
 
 #endregion
+
+builder.Services.AddAuthorizationCore();
+
+builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 
