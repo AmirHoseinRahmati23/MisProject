@@ -18,4 +18,6 @@ public interface IUserService
     Task<DbResponse<User, RegisterError>> AddUser(User user);
 
     Task<DbResponse<RegisterDTO, RegisterError>> RegisterUser(RegisterDTO registerDto);
+
+    Task<DbResponse<ApplicationUser, LoginError>> LoginUser(LoginDTO registerDto);
 }

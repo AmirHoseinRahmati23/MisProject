@@ -14,7 +14,11 @@ global using ClientLibraries.DTOs;
 global using ClientLibraries.Enums;
 global using ClientLibraries.Converters;
 using System.Reflection;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Interfaces;
 using Microsoft.OpenApi.Models;
 
@@ -51,9 +55,36 @@ builder.Services.AddSwaggerGen(c =>
     c.IncludeXmlComments(xmlPath);
 });
 
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(jwtBearerOptions =>
+    {
+        jwtBearerOptions.RequireHttpsMetadata = true;
+        jwtBearerOptions.SaveToken = true;
+        jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["JWTSettings:SecretKey"])),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ClockSkew = TimeSpan.Zero
+        };
+    });
+builder.Services.AddResponseCompression(opts =>
+{
+    opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+        new[] { "application/octet-stream" });
+});
+
 builder.Services.AddDbContext<MisDbContext>(p =>
     p.UseSqlServer(builder.Configuration.GetConnectionString("MisDbContext")));
+
 builder.Services.AddTransient<IUserService, UserService>();
+
+builder.Services.AddTransient<IJwtHelper, JwtHelper>();
 
 var app = builder.Build();
 
