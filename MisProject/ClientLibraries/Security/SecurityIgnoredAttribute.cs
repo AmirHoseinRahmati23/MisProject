@@ -1,4 +1,4 @@
-﻿namespace ClientLibraries;
+﻿namespace ClientLibraries.Security;
 
 /// <summary>
 /// Ignore property while **returning** in Json form

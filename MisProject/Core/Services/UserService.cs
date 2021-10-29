@@ -54,7 +54,7 @@ public class UserService : IUserService
         return result;
     }
 
-    public async Task<DbResponse<RegisterDTO, RegisterError>> RegisterUser(RegisterDTO registerDto)
+    public async Task<DbResponse<RegisterDto, RegisterError>> RegisterUser(RegisterDto registerDto)
     {
         var user = new User
         {
@@ -67,7 +67,7 @@ public class UserService : IUserService
 
         var result = await AddUser(user);
 
-        var returnValue = new DbResponse<RegisterDTO, RegisterError>
+        var returnValue = new DbResponse<RegisterDto, RegisterError>
         {
             Success = result.Success,
             Errors = result.Errors
@@ -87,7 +87,7 @@ public class UserService : IUserService
         return returnValue;
     }
 
-    public async Task<DbResponse<ApplicationUser, LoginError>> LoginUser(LoginDTO loginDto)
+    public async Task<DbResponse<ApplicationUser, LoginError>> LoginUser(LoginDto loginDto)
     {
         var result = new DbResponse<ApplicationUser, LoginError>();
 

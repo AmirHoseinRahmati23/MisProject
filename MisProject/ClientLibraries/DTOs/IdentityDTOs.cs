@@ -2,12 +2,13 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using ClientLibraries.Security;
 
 namespace ClientLibraries.DTOs;
 
 #region Register
 
-public class RegisterDTO
+public class RegisterDto
 {
     [Display(Name = "نام")]
     [Required(ErrorMessage = "{0} نمیتواند خالی باشد")]
@@ -55,7 +56,7 @@ public class RegisterDTO
     public string RepeatPassword { get; set; } = null!;
 }
 
-public class RegisterDtoFluentValidator : AbstractValidator<RegisterDTO>
+public class RegisterDtoFluentValidator : AbstractValidator<RegisterDto>
 {
     public RegisterDtoFluentValidator()
     {
@@ -94,7 +95,7 @@ public class RegisterDtoFluentValidator : AbstractValidator<RegisterDTO>
 
     public Func<object, string, Task<IEnumerable<string>>> ValidateValue => async (model, propertyName) =>
     {
-        var result = await ValidateAsync(ValidationContext<RegisterDTO>.CreateWithOptions((RegisterDTO)model, x => x.IncludeProperties(propertyName)));
+        var result = await ValidateAsync(ValidationContext<RegisterDto>.CreateWithOptions((RegisterDto)model, x => x.IncludeProperties(propertyName)));
         return result.IsValid
             ? Array.Empty<string>()
             : result.Errors.Select(e => e.ErrorMessage);
@@ -105,7 +106,7 @@ public class RegisterDtoFluentValidator : AbstractValidator<RegisterDTO>
 
 #region Login
 
-public class LoginDTO
+public class LoginDto
 {
     [Display(Name = "نام کاربری", Prompt = "نام کاربری")]
     [Required(ErrorMessage = "{0} نمیتواند خالی باشد")]
@@ -123,7 +124,7 @@ public class LoginDTO
     public string Password { get; set; } = null!;
 }
 
-public class LoginDtoFluentValidator : AbstractValidator<LoginDTO>
+public class LoginDtoFluentValidator : AbstractValidator<LoginDto>
 {
     public LoginDtoFluentValidator()
     {
@@ -141,7 +142,7 @@ public class LoginDtoFluentValidator : AbstractValidator<LoginDTO>
 
     public Func<object, string, Task<IEnumerable<string>>> ValidateValue => async (model, propertyName) =>
     {
-        var result = await ValidateAsync(ValidationContext<LoginDTO>.CreateWithOptions((LoginDTO)model, x => x.IncludeProperties(propertyName)));
+        var result = await ValidateAsync(ValidationContext<LoginDto>.CreateWithOptions((LoginDto)model, x => x.IncludeProperties(propertyName)));
         return result.IsValid
             ? Array.Empty<string>()
             : result.Errors.Select(e => e.ErrorMessage);

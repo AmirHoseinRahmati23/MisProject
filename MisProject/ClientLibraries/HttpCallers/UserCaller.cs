@@ -6,9 +6,9 @@ namespace ClientLibraries.HttpCallers;
 public interface IUserCaller
 {
     /// <summary>
-    /// Status 200: Cast to DbResponse<RegisterDTO, RegisterError>, Status 400: Cast to ValidationResult
+    /// Status 200: Cast to DbResponse<RegisterDto, RegisterError>, Status 400: Cast to ValidationResult
     /// </summary>
-    Task<HttpResponseMessage> Register(RegisterDTO dto);
+    Task<HttpResponseMessage> Register(RegisterDto dto);
 
     /// <summary>
     /// Return ApplicationUser? in each status
@@ -18,7 +18,7 @@ public interface IUserCaller
     /// <summary>
     /// Status 200: Cast to DbResponse<string, LoginError>, Status 400: Cast to ValidationResult
     /// </summary>
-    Task<HttpResponseMessage> Login(LoginDTO dto);
+    Task<HttpResponseMessage> Login(LoginDto dto);
 
     /// <summary>
     /// Check if user have permission or not.
@@ -29,7 +29,7 @@ public interface IUserCaller
 public class UserCaller : IUserCaller
 {
     private readonly HttpClient _client;
-    private string _controllerAddress = "/Api/V1/User";
+    private readonly string _controllerAddress = "/Api/V1/User";
 
     public UserCaller(HttpClient client)
     {
@@ -37,7 +37,7 @@ public class UserCaller : IUserCaller
     }
 
     /// <inheritdoc />
-    public async Task<HttpResponseMessage> Register(RegisterDTO dto)
+    public async Task<HttpResponseMessage> Register(RegisterDto dto)
     {
         try
         {
@@ -55,7 +55,7 @@ public class UserCaller : IUserCaller
     {
         try
         {
-            var result = await _client.GetAsync(_controllerAddress + $"?jwtToken={jwtToken}");
+            var result = await _client.GetAsync($"{_controllerAddress}?jwtToken={jwtToken}");
 
             if (result.IsSuccessStatusCode)
             {
@@ -72,7 +72,7 @@ public class UserCaller : IUserCaller
     }
 
     /// <inheritdoc />
-    public async Task<HttpResponseMessage> Login(LoginDTO dto)
+    public async Task<HttpResponseMessage> Login(LoginDto dto)
     {
         try
         {

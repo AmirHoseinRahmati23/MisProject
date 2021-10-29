@@ -1,5 +1,5 @@
-﻿@inject ISnackbar Snackbar
-@inject IUserCaller userCaller
+﻿@inject ISnackbar _snackbar
+@inject IUserCaller _userCaller
 
 <MudCarouselItem Transition="Transition.Slide">
     <MudCardHeader Class="justify-center">
@@ -79,7 +79,7 @@
     private bool _isSuccess = false;
     private string[] _errors = { };
 
-    private RegisterDTO _model = new();
+    private RegisterDto _model = new();
     private RegisterDtoFluentValidator _modelValidator = new();
 
     private async Task Register()
@@ -87,7 +87,7 @@
         await _form.Validate();
         if (_isSuccess)
         {
-            var result = await userCaller.Register(_model);
+            var result = await _userCaller.Register(_model);
             if (result.StatusCode == HttpStatusCode.OK)
             {
                 await HandleSuccessResult(result);
@@ -97,33 +97,33 @@
                 var content = await result.Content.ReadFromJsonAsync<ValidationResult>();
                 if (content != null)
                 {
-                    Snackbar.AddErrorList(content.Errors.Select(p => p.ErrorMessage));
+                    _snackbar.AddErrorList(content.Errors.Select(p => p.ErrorMessage));
                 }
             }
             else
             {
-                Snackbar.AddUnknownError();
+                _snackbar.AddUnknownError();
             }
         }
     }
 
     private async Task HandleSuccessResult(HttpResponseMessage responseMessage)
     {
-        var content = await responseMessage.Content.ReadFromJsonAsync<DbResponse<RegisterDTO, RegisterError>>();
+        var content = await responseMessage.Content.ReadFromJsonAsync<DbResponse<RegisterDto, RegisterError>>();
         if (content == null)
         {
-            Snackbar.AddUnknownError();
+            _snackbar.AddUnknownError();
             return;
         }
 
         if (content.Success)
         {
-            Snackbar.Add("ثبت نام با موفقیت انجام شد.", Severity.Success);
+            _snackbar.Add("ثبت نام با موفقیت انجام شد.", Severity.Success);
             NextCarouseAction.Invoke();
         }
         else
         {
-            Snackbar.AddErrorList(content.Errors.Values);
+            _snackbar.AddErrorList(content.Errors.Values);
         }
     }
 

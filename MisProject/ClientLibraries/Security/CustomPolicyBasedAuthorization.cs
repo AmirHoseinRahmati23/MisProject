@@ -7,7 +7,7 @@ namespace ClientLibraries.Security;
 
 public class PermissionPolicyProvider : IAuthorizationPolicyProvider
 {
-    const string POLICY_PREFIX = "RequiredPermission_";
+    const string PolicyPrefix = "RequiredPermission_";
     private DefaultAuthorizationPolicyProvider FallbackPolicyProvider { get; }
 
     public PermissionPolicyProvider(IOptions<AuthorizationOptions> options)
@@ -21,8 +21,8 @@ public class PermissionPolicyProvider : IAuthorizationPolicyProvider
 
     public async Task<AuthorizationPolicy?> GetPolicyAsync(string policyName)
     {
-        if (policyName.StartsWith(POLICY_PREFIX, StringComparison.OrdinalIgnoreCase) &&
-            int.TryParse(policyName.Substring(POLICY_PREFIX.Length), out var permId))
+        if (policyName.StartsWith(PolicyPrefix, StringComparison.OrdinalIgnoreCase) &&
+            int.TryParse(policyName[PolicyPrefix.Length..], out var permId))
         {
             var policy = new AuthorizationPolicyBuilder();
             policy.AddRequirements(new PermissionRequirement(permId));
@@ -42,14 +42,14 @@ public class PermissionRequirement : IAuthorizationRequirement
 
 public class PermissionAuthorizeAttribute : AuthorizeAttribute
 {
-    const string POLICY_PREFIX = "RequiredPermission_";
+    const string PolicyPrefix = "RequiredPermission_";
 
     public PermissionAuthorizeAttribute(int permissionId) => PermissionId = permissionId;
 
-    public int PermissionId
+    private int PermissionId
     {
-        get => int.TryParse(Policy?.Substring(POLICY_PREFIX.Length), out var id) ? id : 0;
-        set => Policy = $"{POLICY_PREFIX}{value}";
+        get => int.TryParse(Policy?[PolicyPrefix.Length..], out var id) ? id : 0;
+        init => Policy = $"{PolicyPrefix}{value}";
     }
 }
 

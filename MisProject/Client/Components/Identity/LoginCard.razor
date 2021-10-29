@@ -1,7 +1,7 @@
-﻿@inject ISnackbar Snackbar
-@inject IUserCaller UserCaller
-@inject ILocalStorageService LocalStorageService
-@inject NavigationManager NavigationManager
+﻿@inject ISnackbar _snackbar
+@inject IUserCaller _userCaller
+@inject ILocalStorageService _localStorageService
+@inject NavigationManager _navigationManager
 
 <MudCarouselItem Transition="Transition.Slide">
     <MudCardHeader Class="justify-center">
@@ -52,7 +52,7 @@
     private bool _isSuccess = false;
     private string[] _errors = { };
 
-    private LoginDTO _model = new();
+    private LoginDto _model = new();
     private LoginDtoFluentValidator _modelValidator = new();
 
 
@@ -61,7 +61,7 @@
         await _form.Validate();
         if (_isSuccess)
         {
-            var result = await UserCaller.Login(_model);
+            var result = await _userCaller.Login(_model);
             if (result.StatusCode == HttpStatusCode.OK)
             {
                 await HandleSuccessResult(result);
@@ -71,12 +71,12 @@
                 var content = await result.Content.ReadFromJsonAsync<ValidationResult>();
                 if (content != null)
                 {
-                    Snackbar.AddErrorList(content.Errors.Select(p => p.ErrorMessage));
+                    _snackbar.AddErrorList(content.Errors.Select(p => p.ErrorMessage));
                 }
             }
             else
             {
-                Snackbar.AddUnknownError();
+                _snackbar.AddUnknownError();
             }
         }
     }
@@ -86,19 +86,19 @@
         var content = await responseMessage.Content.ReadFromJsonAsync<DbResponse<string, LoginError>>();
         if (content == null)
         {
-            Snackbar.AddUnknownError();
+            _snackbar.AddUnknownError();
             return;
         }
 
         if (content.Success && content.Value != null)
         {
-            Snackbar.Add("ورود با موفقیت انجام شد.", Severity.Success);
-            await LocalStorageService.SetItemAsStringAsync("jwt_token", content.Value);
-            NavigationManager.NavigateTo("/", true, true); // Change this to /Profile
+            _snackbar.Add("ورود با موفقیت انجام شد.", Severity.Success);
+            await _localStorageService.SetItemAsStringAsync("jwt_token", content.Value);
+            _navigationManager.NavigateTo("/", true, true); // Change this to /Profile
         }
         else
         {
-            Snackbar.AddErrorList(content.Errors.Values);
+            _snackbar.AddErrorList(content.Errors.Values);
         }
     }
 }

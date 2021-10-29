@@ -1,4 +1,6 @@
-﻿namespace Core.Security;
+﻿using ClientLibraries.Security;
+
+namespace Core.Security;
 
 public static class SecurityIgnoredMethod<Type>
 {
