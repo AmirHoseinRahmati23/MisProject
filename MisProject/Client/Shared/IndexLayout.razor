@@ -8,7 +8,7 @@
     <MudLayout>
         <MudAppBar Elevation="1" Fixed="true">
             <MudGrid Justify="Justify.SpaceBetween">
-                <div>
+                <div class="d-flex align-center">
                     <RightAppBarButtons />
                     <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
                         <MudMenu Icon="@Icons.Filled.Menu" Color="Color.Inherit">
@@ -17,7 +17,7 @@
                     </MudHidden>
                 </div>
 
-                <div>
+                <div class="d-flex align-center">
                     <LeftAppBarButtons />
                     <ThemeChangerButton RefreshAction="() => StateHasChanged()" Edge="Edge.End" @ref="_themeChangerButton" />
                 </div>
