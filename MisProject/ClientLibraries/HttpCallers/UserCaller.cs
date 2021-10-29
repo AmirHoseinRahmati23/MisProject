@@ -14,6 +14,11 @@ public interface IUserCaller
     /// Return ApplicationUser? in each status
     /// </summary>
     Task<ApplicationUser?> GetUserByJwt(string jwtToken);
+
+    /// <summary>
+    /// Status 200: Cast to DbResponse<string, LoginError>, Status 400: Cast to ValidationResult
+    /// </summary>
+    Task<HttpResponseMessage> Login(LoginDTO dto);
 }
 
 public class UserCaller : IUserCaller
@@ -26,7 +31,7 @@ public class UserCaller : IUserCaller
         _client = client;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public async Task<HttpResponseMessage> Register(RegisterDTO dto)
     {
         try
@@ -40,6 +45,7 @@ public class UserCaller : IUserCaller
         }
     }
 
+    /// <inheritdoc/>
     public async Task<ApplicationUser?> GetUserByJwt(string jwtToken)
     {
         try
@@ -54,8 +60,23 @@ public class UserCaller : IUserCaller
         }
         catch
         {
+            // ignored
         }
 
         return null;
+    }
+
+    /// <inheritdoc />
+    public async Task<HttpResponseMessage> Login(LoginDTO dto)
+    {
+        try
+        {
+            var result = await _client.PostAsJsonAsync(_controllerAddress+"/Login", dto);
+            return result;
+        }
+        catch
+        {
+            return new HttpResponseMessage(0);
+        }
     }
 }

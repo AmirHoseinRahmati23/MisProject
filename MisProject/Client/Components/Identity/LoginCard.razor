@@ -1,4 +1,9 @@
-﻿<MudCarouselItem Transition="Transition.Slide">
+﻿@inject ISnackbar Snackbar
+@inject IUserCaller UserCaller
+@inject ILocalStorageService LocalStorageService
+@inject NavigationManager NavigationManager
+
+<MudCarouselItem Transition="Transition.Slide">
     <MudCardHeader Class="justify-center">
         <CardHeaderAvatar>
             <MudIcon Icon="@Icons.Filled.Login" Size="Size.Large" />
@@ -12,13 +17,23 @@
     </MudCardHeader>
     <MudDivider DividerType="DividerType.Middle" />
 
-    <MudForm @ref="_form" @bind-IsValid="_isSuccess" @bind-Errors="_errors">
+    <MudForm @ref="_form" @bind-IsValid="_isSuccess" @bind-Errors="_errors" Model="_model">
         <MudCardContent>
             <MudRTLProvider RightToLeft="false">
-                <MudTextField T="string" Label="نام کاربری" Required="true" RequiredError="وارد کردن این فیلد اجباری است"
-                              @bind-Value="_model.UserName" Validation="@(new Func<string, IEnumerable<string>>(UsernameValidation))" Immediate="true" />
-                <MudTextField InputType="InputType.Password" Label="رمز عبور" Required="true" RequiredError="وارد کردن این فیلد اجباری است" Immediate="true"
-                              @bind-Value="_model.Password" Class="mt-4" Validation="@(new Func<string, IEnumerable<string>>(PasswordValidation))" />
+
+                <MudTextField @bind-Value="_model.UserName"
+                              Validation="@(_modelValidator.ValidateValue)"
+                              For="@(() => _model.UserName)"
+                              Immediate="true"
+                              Label="نام کاربری" />
+
+                <MudTextField @bind-Value="_model.Password"
+                              Validation="@(_modelValidator.ValidateValue)"
+                              For="@(() => _model.Password)"
+                              Immediate="true"
+                              Label="رمز عبور"
+                              InputType="InputType.Password" />
+
             </MudRTLProvider>
         </MudCardContent>
         <MudDivider DividerType="DividerType.Middle" Class="mt-2" />
@@ -38,41 +53,52 @@
     private string[] _errors = { };
 
     private LoginDTO _model = new();
+    private LoginDtoFluentValidator _modelValidator = new();
 
 
     private async void Login()
     {
         await _form.Validate();
         if (_isSuccess)
-            await Task.Delay(1000);
-    }
-
-    private IEnumerable<string> UsernameValidation(string username)
-    {
-        if (string.IsNullOrWhiteSpace(username))
         {
-            yield return "وارد کردن این فیلد اجباری است";
-            yield break;
+            var result = await UserCaller.Login(_model);
+            if (result.StatusCode == HttpStatusCode.OK)
+            {
+                await HandleSuccessResult(result);
+            }
+            else if (result.StatusCode == HttpStatusCode.BadRequest)
+            {
+                var content = await result.Content.ReadFromJsonAsync<ValidationResult>();
+                if (content != null)
+                {
+                    Snackbar.AddErrorList(content.Errors.Select(p => p.ErrorMessage));
+                }
+            }
+            else
+            {
+                Snackbar.AddUnknownError();
+            }
         }
-        if (username.Length < 5)
-            yield return "نام کاربری نباید کمتر از 5 کاراکتر باشد";
-        if (username.Length > 20)
-            yield return "نام کاربری نباید بیشتر از 20 کاراکتر باشد";
-        if (!Regex.IsMatch(username, "^[a-zA-Z][a-zA-Z0-9_]{4,19}$"))
-            yield return "لطفا فقط از حروف انگلیسی و اعداد و اندرلاین استفاده کنید.";
     }
 
-    private IEnumerable<string> PasswordValidation(string pw)
+    private async Task HandleSuccessResult(HttpResponseMessage responseMessage)
     {
-        if (string.IsNullOrWhiteSpace(pw))
+        var content = await responseMessage.Content.ReadFromJsonAsync<DbResponse<string, LoginError>>();
+        if (content == null)
         {
-            yield return "وارد کردن این فیلد اجباری است";
-            yield break;
+            Snackbar.AddUnknownError();
+            return;
         }
-        if (pw.Length < 8)
-            yield return "رمز عبور نباید کمتر از 8 کاراکتر باشد";
-        if (pw.Length > 200)
-            yield return "رمز عبور نباید بیشتر از 200 کاراکتر باشد";
-    }
 
+        if (content.Success && content.Value != null)
+        {
+            Snackbar.Add("ورود با موفقیت انجام شد.", Severity.Success);
+            await LocalStorageService.SetItemAsStringAsync("jwt_token", content.Value);
+            NavigationManager.NavigateTo("/", true, true); // Change this to /Profile
+        }
+        else
+        {
+            Snackbar.AddErrorList(content.Errors.Values);
+        }
+    }
 }

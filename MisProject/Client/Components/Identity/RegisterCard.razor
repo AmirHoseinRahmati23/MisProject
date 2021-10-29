@@ -1,5 +1,4 @@
-﻿@using FluentValidation.Results
-@inject ISnackbar Snackbar
+﻿@inject ISnackbar Snackbar
 @inject IUserCaller userCaller
 
 <MudCarouselItem Transition="Transition.Slide">
@@ -24,39 +23,39 @@
             <MudRTLProvider RightToLeft="false">
 
                 <MudTextField @bind-Value="_model.FirstName"
-                              Validation="@(modelValidator.ValidateValue)"
+                              Validation="@(_modelValidator.ValidateValue)"
                               For="@(() => _model.FirstName)"
                               Immediate="true"
                               Label="نام" />
 
                 <MudTextField @bind-Value="_model.LastName"
-                              Validation="@(modelValidator.ValidateValue)"
+                              Validation="@(_modelValidator.ValidateValue)"
                               For="@(() => _model.LastName)"
                               Immediate="true"
                               Label="نام خانوادگی" />
 
                 <MudTextField @bind-Value="_model.UserName"
-                              Validation="@(modelValidator.ValidateValue)"
+                              Validation="@(_modelValidator.ValidateValue)"
                               For="@(() => _model.UserName)"
                               Immediate="true"
                               Label="نام کاربری" />
 
                 <MudTextField @bind-Value="_model.Email"
-                              Validation="@(modelValidator.ValidateValue)"
+                              Validation="@(_modelValidator.ValidateValue)"
                               For="@(() => _model.Email)"
                               Immediate="true"
                               Label="ایمیل"
                               InputType="InputType.Email" />
 
                 <MudTextField @bind-Value="_model.Password"
-                              Validation="@(modelValidator.ValidateValue)"
+                              Validation="@(_modelValidator.ValidateValue)"
                               For="@(() => _model.Password)"
                               Immediate="true"
                               Label="رمز عبور"
                               InputType="InputType.Password" />
 
                 <MudTextField @bind-Value="_model.RepeatPassword"
-                              Validation="@(modelValidator.ValidateValue)"
+                              Validation="@(_modelValidator.ValidateValue)"
                               For="@(() => _model.RepeatPassword)"
                               Immediate="true"
                               Label="تکرار رمز عبور"
@@ -81,7 +80,7 @@
     private string[] _errors = { };
 
     private RegisterDTO _model = new();
-    private RegisterDtoFluentValidator modelValidator = new();
+    private RegisterDtoFluentValidator _modelValidator = new();
 
     private async Task Register()
     {
