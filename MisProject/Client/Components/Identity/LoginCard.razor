@@ -94,7 +94,7 @@
         {
             _snackbar.Add("ورود با موفقیت انجام شد.", Severity.Success);
             await _localStorageService.SetItemAsStringAsync("jwt_token", content.Value);
-            _navigationManager.NavigateTo("/", true, true); // Change this to /Profile
+            _navigationManager.NavigateTo("/", true, true); // TODO: Change this to /Profile
         }
         else
         {

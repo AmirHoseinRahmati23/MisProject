@@ -1,6 +1,7 @@
 ﻿@page "/Register"
 @page "/Login"
 @using MisProject.Client.Components.Identity
+@inject NavigationManager _navigationManager
 
 <PageTitle>احراز هویت</PageTitle>
 
@@ -18,8 +19,19 @@
 </MudGrid>
 
 @code {
+    
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationState { get; } = null!;
+
     private string _height = "height: 350px";
     private MudCarousel<object> _carousel = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var state = await AuthenticationState;
+        if (state.User.Identity is {IsAuthenticated: true })
+            _navigationManager.NavigateTo("/"); // TODO: Change this to /profile
+    }
 
     private void NextCarouseAction()
     {
