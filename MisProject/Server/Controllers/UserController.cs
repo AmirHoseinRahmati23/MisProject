@@ -73,14 +73,50 @@ public class UserController : Controller
 
         if (user != null)
         {
-            return Ok(new ApplicationUser
-            {
-                UserName = user.UserName,
-                Email = user.Email,
-                UserId = user.UserId
-            });
+            return Ok(new ApplicationUser(user.UserId, user.UserName, user.Email));
         }
 
         return BadRequest();
+    }
+
+    /// <summary>
+    /// Login user (Get JwtToken)
+    /// </summary>
+    /// <param name="dto">LoginDto for user</param>
+    /// <remarks>
+    /// Sample request:
+    ///     Post /Api/V1/User
+    ///     {
+    ///         "UserName": "myusername",
+    ///         "Password": "MyPassword"
+    ///     }
+    /// </remarks>
+    /// <returns>
+    ///     "DbResponse string, RegisterError"
+    /// </returns>
+    /// <response code="200">Returns the DbResponse of string (JwtToken)</response>
+    /// <response code="400">Returns if DtoValidationField</response>
+    [HttpPost("[action]")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DbResponse<string, LoginError>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationResult))]
+    public async Task<ActionResult<DbResponse<string, LoginError>>> Login([FromBody] LoginDTO dto)
+    {
+        var dtoFluentValidator = new LoginDtoFluentValidator();
+        var validationResult = await dtoFluentValidator.ValidateAsync(dto);
+
+        if (!validationResult.IsValid)
+            return BadRequest(validationResult);
+
+        var result = await _userService.LoginUser(dto);
+        var returnValue = new DbResponse<string, LoginError>()
+        {
+            Success = result.Success,
+            Errors = result.Errors,
+        };
+
+        if (result.Success && result.Value != null)
+            returnValue.Value = _jwtHelper.GenerateJwtToken(result.Value);
+
+        return Ok(returnValue);
     }
 }

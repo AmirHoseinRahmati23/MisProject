@@ -10,7 +10,7 @@ namespace Core.Security;
 
 public interface IJwtHelper
 {
-    string GenerateJwtToken(User user);
+    string GenerateJwtToken(ApplicationUser user);
 
     Task<User?> GetUserByJWT(string jwtToken);
 }
@@ -28,7 +28,7 @@ public class JwtHelper : IJwtHelper
         _logger = logger;
     }
 
-    public string GenerateJwtToken(User user)
+    public string GenerateJwtToken(ApplicationUser user)
     {
         //getting the secret key
         var secretKey = _configuration["JWTSettings:SecretKey"];
