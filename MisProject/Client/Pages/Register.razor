@@ -21,7 +21,7 @@
 @code {
     
     [CascadingParameter]
-    private Task<AuthenticationState> AuthenticationState { get; } = null!;
+    private Task<AuthenticationState> AuthenticationState { get; set; } = null!;
 
     private string _height = "height: 350px";
     private MudCarousel<object> _carousel = new();
