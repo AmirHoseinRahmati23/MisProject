@@ -59,6 +59,23 @@ public class MisDbContext : DbContext
 
         modelBuilder.Entity<RolePermission>(p => { p.HasQueryFilter(u => !u.Role.IsDeleted); });
 
-        #endregion
+        SeedUser(modelBuilder);
+        
+    #endregion
+    }
+
+    private void SeedUser(ModelBuilder builder)
+    {
+            var admin = new User()
+            {
+                Id = "b74ddd14-6395-40c2-95c2-843e5db12554db125 ",
+                UserName = "admin",
+                NormalizedUserName = "ADMIN"
+            };
+
+            PasswordHasher<User> passwordHasher = new PasswordHasher<User>();
+            firstAdmin.PasswordHash = passwordHasher.HashPassword(firstAdmin, "raefipoor#2534#AM");
+
+            builder.Entity<User>().HasData(firstAdmin, secoundAdmin);
     }
 }
