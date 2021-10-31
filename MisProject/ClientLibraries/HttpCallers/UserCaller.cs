@@ -29,7 +29,6 @@ public interface IUserCaller
 public class UserCaller : IUserCaller
 {
     private readonly HttpClient _client;
-    private readonly string _controllerAddress = "/Api/V1/User";
 
     public UserCaller(HttpClient client)
     {
@@ -41,7 +40,7 @@ public class UserCaller : IUserCaller
     {
         try
         {
-            var result = await _client.PostAsJsonAsync(_controllerAddress, dto);
+            var result = await _client.PostAsJsonAsync( _client.BaseAddress , dto);
             return result;
         }
         catch
@@ -55,7 +54,7 @@ public class UserCaller : IUserCaller
     {
         try
         {
-            var result = await _client.GetAsync($"{_controllerAddress}?jwtToken={jwtToken}");
+            var result = await _client.GetAsync($"{_client.BaseAddress}?jwtToken={jwtToken}");
 
             if (result.IsSuccessStatusCode)
             {
@@ -76,7 +75,7 @@ public class UserCaller : IUserCaller
     {
         try
         {
-            var result = await _client.PostAsJsonAsync(_controllerAddress + "/Login", dto);
+            var result = await _client.PostAsJsonAsync(_client.BaseAddress + "/Login", dto);
             return result;
         }
         catch

@@ -41,7 +41,7 @@ builder.Services.AddMudServices(p =>
 builder.Services.AddTransient<CustomAuthorizationHandler>();
 builder.Services.AddHttpClient<IUserCaller, UserCaller>("Client", c =>
 {
-    c.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
+    c.BaseAddress = "/Api/V1/User";
 }).AddHttpMessageHandler<CustomAuthorizationHandler>();
 
 #endregion
